@@ -3,6 +3,10 @@
 .env.local
 .env.*.local
 
+# Generated data
+data/docs/          # Crawled documentation (regenerate with: python main.py crawl)
+# Keep embeddings - they're computed model output
+
 # Python
 __pycache__/
 *.py[cod]
