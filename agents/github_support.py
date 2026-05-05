@@ -16,24 +16,33 @@ class GitHubSupportAgent(Agent):
         self.conversation_history = []
 
     async def process(self, question: str) -> str:
-        """Answer a GitHub question using RAG."""
+        """Answer a GitHub question using RAG - ONLY from documentation."""
         # Get context from RAG
         context = self.rag.get_context(question, k=5)
 
-        # Build prompt with context
-        system_prompt = """You are a GitHub support expert. Answer the following question using the provided documentation context.
+        # Build strict prompt - NO GUESSING
+        system_prompt = """You are a GitHub support expert with strict rules:
 
-Provide clear, concise, and helpful answers. If the context doesn't contain relevant information, say so."""
+RULES:
+1. ONLY answer using information from the provided documentation context
+2. If the documentation does NOT contain relevant information, respond with:
+   "I cannot answer this question - the information is not available in the GitHub REST API documentation."
+3. Never guess, assume, or add information not in the context
+4. Always cite which documentation section your answer comes from
+5. If the question is unclear or outside GitHub REST API scope, say so
+
+Be accurate. Be cautious. Answer only from what you know from the docs."""
 
         prompt = f"""Question: {question}
 
-Context from GitHub Documentation:
+Documentation Context:
 {context}
 
-Please provide a helpful answer based on the documentation."""
+IMPORTANT: Only use the documentation provided above. If it doesn't have the answer, say so clearly."""
 
         # Call LLM
         messages = [
+            {"role": "system", "content": system_prompt},
             {"role": "user", "content": prompt}
         ]
 
