@@ -10,7 +10,8 @@ class RAGSystem:
 
     def __init__(self, store_dir: str = "data/embeddings"):
         self.vector_store = VectorStore(store_dir)
-        self.chunker = TextChunker(chunk_size=1000, overlap=100)
+        # Optimized for speed: larger chunks = fewer embeddings to generate
+        self.chunker = TextChunker(chunk_size=1500, overlap=150)
         self.loader = DocumentLoader()
 
     def ingest_documents(self, doc_directory: str) -> int:

@@ -1,5 +1,4 @@
 """Download GitHub REST API docs with web crawling."""
-import json
 import time
 from utils.url_downloader import URLDocumentDownloader
 from agents.github_support import GitHubSupportAgent
@@ -18,7 +17,7 @@ def download_corpus():
     downloaded = URLDocumentDownloader.crawl_github_rest_api(
         start_url="https://docs.github.com/en/rest",
         output_dir="data/docs",
-        max_pages=150
+        max_pages=100
     )
     print(f"✓ Downloaded: {downloaded} documents\n")
 

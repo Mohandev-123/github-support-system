@@ -1,6 +1,8 @@
 """Download and fetch documents from URLs."""
 import os
+import asyncio
 from typing import List, Set
+import aiohttp
 import requests
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin, urlparse
@@ -57,54 +59,90 @@ class URLDocumentDownloader:
         return links
 
     @staticmethod
-    def crawl_github_rest_api(start_url: str = "https://docs.github.com/en/rest", 
-                              output_dir: str = "data/docs", max_pages: int = 100) -> int:
-        """Crawl GitHub REST API docs starting from a URL."""
+    async def fetch_url_async(url: str, session: aiohttp.ClientSession) -> str:
+        """Fetch content from URL asynchronously."""
+        try:
+            async with session.get(url, timeout=aiohttp.ClientTimeout(total=10)) as response:
+                return await response.text()
+        except Exception as e:
+            print(f"Error fetching {url}: {e}")
+            return ""
+
+    @staticmethod
+    async def crawl_github_rest_api_async(start_url: str = "https://docs.github.com/en/rest", 
+                              output_dir: str = "data/docs", max_pages: int = 50) -> int:
+        """Async crawl implementation with concurrent requests."""
         os.makedirs(output_dir, exist_ok=True)
         visited: Set[str] = set()
         to_visit: List[str] = [start_url]
         saved_count = 0
         
-        print(f"Starting crawl from: {start_url}")
+        print(f"Starting fast crawl from: {start_url}")
         print(f"Max pages to crawl: {max_pages}\n")
         
-        while to_visit and len(visited) < max_pages:
-            url = to_visit.pop(0)
-            
-            if url in visited:
-                continue
+        # Use connection pooling for faster requests
+        connector = aiohttp.TCPConnector(limit=10, limit_per_host=5)
+        async with aiohttp.ClientSession(connector=connector) as session:
+            while to_visit and len(visited) < max_pages:
+                # Process up to 5 pages concurrently
+                batch = [to_visit.pop(0) for _ in range(min(5, len(to_visit)))]
                 
-            visited.add(url)
-            print(f"Crawling ({len(visited)}/{max_pages}): {url}")
-            
-            content = URLDocumentDownloader.fetch_url(url)
-            if not content:
-                continue
-            
-            # Convert HTML to text
-            text = URLDocumentDownloader.html_to_text(content)
-            
-            # Extract links for further crawling
-            links = URLDocumentDownloader.extract_links(content, url)
-            for link in links:
-                if link not in visited and link not in to_visit:
-                    to_visit.append(link)
-            
-            # Save document
-            filename = f"doc_{len(visited)}.md"
-            filepath = os.path.join(output_dir, filename)
-            
-            try:
-                with open(filepath, "w", encoding="utf-8") as f:
-                    f.write(f"# Source: {url}\n\n")
-                    f.write(text)
-                print(f"  ✓ Saved to {filename}")
-                saved_count += 1
-            except Exception as e:
-                print(f"  ✗ Error saving: {e}")
+                tasks = []
+                for url in batch:
+                    if url not in visited:
+                        visited.add(url)
+                        tasks.append(URLDocumentDownloader.fetch_url_async(url, session))
+                
+                if not tasks:
+                    break
+                
+                responses = await asyncio.gather(*tasks)
+                
+                for url, content in zip(batch, responses):
+                    if not content:
+                        continue
+                    
+                    print(f"Crawled ({len(visited)}/{max_pages}): {url}")
+                    
+                    # Convert HTML to text
+                    text = URLDocumentDownloader.html_to_text(content)
+                    
+                    # Extract links for further crawling
+                    links = URLDocumentDownloader.extract_links(content, url)
+                    for link in links:
+                        if link not in visited and link not in to_visit and len(visited) < max_pages:
+                            to_visit.append(link)
+                    
+                    # Save document
+                    filename = f"doc_{len(visited)}.md"
+                    filepath = os.path.join(output_dir, filename)
+                    
+                    try:
+                        with open(filepath, "w", encoding="utf-8") as f:
+                            f.write(f"# Source: {url}\n\n")
+                            f.write(text)
+                        print(f"  ✓ Saved")
+                        saved_count += 1
+                    except Exception as e:
+                        print(f"  ✗ Error saving: {e}")
         
         print(f"\n✓ Crawl complete! Visited {len(visited)} pages, saved {saved_count} documents")
         return saved_count
+
+    @staticmethod
+    def crawl_github_rest_api(start_url: str = "https://docs.github.com/en/rest", 
+                              output_dir: str = "data/docs", max_pages: int = 50) -> int:
+        """Sync wrapper for crawling GitHub REST API docs (optimized for speed)."""
+        # Create new event loop for sync context
+        try:
+            loop = asyncio.get_running_loop()
+        except RuntimeError:
+            # No running loop, safe to use asyncio.run()
+            return asyncio.run(URLDocumentDownloader.crawl_github_rest_api_async(
+                start_url, output_dir, max_pages
+            ))
+        # In async context, shouldn't be called directly
+        raise RuntimeError("Use crawl_github_rest_api_async in async context")
 
     @staticmethod
     def download_from_urls(urls: List[str], output_dir: str = "data/docs") -> int:
