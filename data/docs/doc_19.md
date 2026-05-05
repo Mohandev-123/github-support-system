@@ -1,37 +1,35 @@
-# Source: https://docs.github.com/en/enterprise-cloud@latest/organizations/managing-programmatic-access-to-your-organization/managing-requests-for-personal-access-tokens-in-your-organization
+# Source: https://docs.github.com/en/rest/authentication/keeping-your-api-credentials-secure
 
-Managing requests for personal access tokens in your organization - GitHub Enterprise Cloud DocsSkip to main contentGitHub DocsVersion: Enterprise CloudSearch or ask CopilotSearch or askCopilotSelect language: current language is EnglishSearch or ask CopilotSearch or askCopilotOpen menuOpen SidebarOrganizations/Manage programmatic access/Manage token requestsHomeOrganizationsCollaborate with groupsAbout organizationsOrganization dashboardBest practicesCreate new organizationAccess organization settingsCustomize organization profileOrganization news feedDependency insightsGitHub Actions metricsManage membershipInvite users to joinCancel or edit invitationRemove a memberReinstate a memberExport member informationCreate accounts for peopleManage organization rolesRoles in an organizationUse organization rolesCustom roles permissionsPredefined roles permissionsManage custom rolesMaintain ownership continuityAdd a billing managerRemove billing managerSecurity manager roleManaging moderatorsManage repository accessManage repository rolesRepository rolesAbout custom rolesManage custom rolesSet base permissionsView people with accessManage individual accessManage team accessManage outside collaboratorsAdd outside collaboratorCancel collaborator invitationRemove collaboratorConvert member to collaboratorConvert collaborator to memberReinstate collaboratorOrganize members into teamsAbout organization teamsCreating an organization teamAdd members to a teamTeam maintainersTeam profile pictureCode review settingsRenaming a teamChanging team visibilityConfiguring team notificationsSynchronize with an IdPMove a teamAdd a child teamAdd or change parent teamRemove membersScheduled remindersDeleting a teamManage programmatic accessAbout programmatic accessGitHub App managersReview installed GitHub AppsSet a token policyManage token requestsReview token accessLimit app requests and installationsViewing API insightsCredential types referenceManage OAuth accessOAuth app restrictionsRestrict OAuth appsUnrestrict OAuth appsApprove OAuth app accessDeny OAuth app accessManage organization settingsVerify or approve a domainRenaming an organizationTransfer ownershipGovern repository usageRestrict repository creationSet repo management policySet visibility changes policyManage forking policyManage pull request reviewsDisable or limit actionsAbout private networkingAbout Azure private networkingConfiguring private networkingTroubleshooting Azure private networkingConfigure retention periodSet collaborator policyAllow issue deletionOrganization discussionsManage repository discussionsManage the commit signoff policyRestrict deploy keysRestrict team creationCreate an announcement bannerManage scheduled remindersManage default branch nameManage default labelsChange insight visibilityManage display of member namesManage sponsorship updatesManage Pages site publicationManage commit commentsArchive an organizationDelete organizationConvert organization to userUpgrade to Corporate ToSDisable projectsManage projects base permissionsProject visibility permissionsCreate rulesetsManage rulesetsRepository custom propertiesManage or restrict modelsOrganization securityManage 2FAView 2FA usagePrepare to require 2FARequire 2FAManage bots & service accountsManage security settingsManage security & analysisManage allowed IP addressesRestrict email notificationsReview audit logIdentify events by tokenIP addresses in audit logAudit log eventsAccess compliance reportsManage SAML single sign-onIAM with SAML SSOAbout SCIM for organizationsConnect an IdPConfigure SAML & SCIM with OktaEnable & test SAML SSOPrepare to enforce SAML SSOEnforce SAML single sign-onDownload SAML recovery codesManage team synchronizationDisable SAMLUnavailable identity providerTroubleshooting accessGrant access with SAMLManage bots & service accountsManage SAML access2FA & SAML single sign-onManage Git accessSSH certificate authoritiesManage SSH authoritiesMigrate to improved permissionsConvert Owners teamConvert admin teamMigrate admin teamOrganizations/Manage programmatic access/Manage token requestsManaging requests for personal access tokens in your organizationOrganization owners can approve or deny fine-grained personal access tokens that request access to their organization.Copy as MarkdownIn this articleAbout fine-grained personal access token requestsManaging fine-grained personal access token requestsAbout fine-grained personal access token requests
-When organization members create a fine-grained personal access token to access resources owned by the organization, if the organization requires approval for fine-grained personal access tokens, then an organization owner must approve the token before it can be used to access any resources that are not public. For more information, see Setting a personal access token policy for your organization.
-GitHub will notify organization owners with a daily email about all fine-grained personal access tokens that are awaiting approval. When a token is denied or approved, the user who created the token will receive an email notification.
-Note
-Only fine-grained personal access tokens, not personal access tokens (classic), are subject to approval. Unless the organization has restricted access by personal access tokens (classic), any personal access token (classic) can access organization resources without prior approval. For more information, see Setting a personal access token policy for your organization.
-Organization owners can also use the REST API to review and manage fine-grained personal access token requests. These endpoints can only be called by GitHub Apps, and cannot be called with personal access tokens or OAuth apps. For more information, see REST API endpoints for organizations.
-Managing fine-grained personal access token requests
-In the upper-right corner of GitHub, click your profile picture, then click
-Organizations.
-Select an organization by clicking on it.
-Under your organization name, click
-Settings. If you cannot see the "Settings" tab, select the
-dropdown menu, then click Settings.
-In the left sidebar, under
-Personal access tokens, click Pending requests. If any tokens are pending approval for your organization, they will be displayed.
-Click the name of the token that you want to approve or deny.
-Review the access and permissions that the token is requesting.
-To grant the token access to the organization, click Approve. To deny the token access to the organization, click Deny.
-If you denied the request, in the confirmation box, optionally enter the reason that you denied the token. This reason will be shared in the notification that is sent to the token owner. Then, click Deny.
-Alternatively, you can approve or deny multiple tokens at once:
-In the upper-right corner of GitHub, click your profile picture, then click
-Organizations.
-Select an organization by clicking on it.
-Under your organization name, click
-Settings. If you cannot see the "Settings" tab, select the
-dropdown menu, then click Settings.
-In the left sidebar, under
-Personal access tokens, click Pending requests. If any tokens are pending approval for your organization, they will be displayed.
-Optionally, use filters to only display certain tokens.
-Use the Owner dropdown to filter the tokens by the member who created the token.
-Use the Repository dropdown to filter the tokens by repository access.
-Use the Permissions dropdown to filter the tokens by permission.
-Select each token that you want to approve or reject.
-Select the request selected... dropdown menu and click Approve... or Deny....
-Help and supportDid you find what you needed? Yes NoPrivacy policyHelp us make these docs great!All GitHub docs are open source. See something that's wrong or unclear? Submit a pull request.Make a contributionLearn how to contributeStill need help?Ask the GitHub communityContact supportLegal© 2026 GitHub, Inc.TermsPrivacyStatusPricingExpert servicesBlog
+Keeping your API credentials secure - GitHub DocsSkip to main contentGitHub DocsVersion: Free, Pro, & TeamSearch or ask CopilotSearch or askCopilotSelect language: current language is EnglishSearch or ask CopilotSearch or askCopilotOpen menuOpen SidebarKeeping your API credentials secureFollow these best practices to keep your API credentials and tokens secure.Copy as MarkdownIn this articleChoose an appropriate authentication method
+You should choose an authentication method that is appropriate for the task you want to accomplish.
+To use the API for personal use, you can create a personal access token.
+To use the API on behalf of an organization or another user, you should create a GitHub App.
+To use the API in a GitHub Actions workflow, you should authenticate with the built-in GITHUB_TOKEN.
+For more information, see About authentication to GitHub.
+Limit the permissions of your credentials
+When creating a personal access token, only select the minimum permissions or scopes needed, and set an expiration date for the minimum amount of time you'll need to use the token. GitHub recommends that you use fine-grained personal access tokens instead of personal access tokens (classic). For more information, see Managing your personal access tokens.
+A token has the same capabilities to access resources and perform actions on those resources that the owner of the token has, and is further limited by any scopes or permissions granted to the token. A token cannot grant additional access capabilities to a user.
+When creating a GitHub App, select the minimum permissions that your GitHub App will need. For more information, see Best practices for creating a GitHub App.
+When authenticating with GITHUB_TOKEN in a GitHub Actions workflow, only give the minimum amount of permissions needed. For more information, see Use GITHUB_TOKEN for authentication in workflows.
+Store your authentication credentials securely
+Treat authentication credentials the same way you would treat your passwords or other sensitive credentials.
+Don't share authentication credentials using an unencrypted messaging or email system.
+Don't pass your personal access token as plain text in the command line. For more information, see Managing your personal access tokens.
+Don't push unencrypted authentication credentials like tokens or keys to any repository, even if the repository is private. Instead consider using a GitHub Actions secret or Codespaces secret. For more information, see Using secrets in GitHub Actions and Managing your account-specific secrets for GitHub Codespaces.
+You can use secret scanning to discover tokens, private keys, and other secrets that were pushed to a repository, or to block future pushes that contain secrets. For more information, see About secret scanning.
+Limit who can access your authentication credentials
+Don't share your personal access token with others. Instead of sharing a personal access token, consider creating a GitHub App. For more information, see About creating GitHub Apps.
+If you need to share credentials with a team, store the credentials in a secure shared system. For example, you could store and share passwords securely using 1Password, or you could store keys in Azure KeyVault and manage access with your IAM (Identity and access management).
+If you're creating a GitHub Actions workflow that needs to access the API, you can store your credentials in an encrypted secret, and access the encrypted secret from the workflow. For more information, see Using secrets in GitHub Actions and Making authenticated API requests with a GitHub App in a GitHub Actions workflow.
+Use authentication credentials securely in your code
+Never hardcode authentication credentials like tokens, keys, or app-related secrets into your code. Instead, consider using a secret manager such as Azure Key Vault or HashiCorp Vault. For more information about securing GitHub App credentials, see Best practices for creating a GitHub App.
+If you find another user's personal access token exposed on GitHub or elsewhere, you can submit a revocation request through the REST API. See Revocation.
+When using a personal access token in a script, consider storing your token as a GitHub Actions secret and running your script through GitHub Actions. You can also store your token as a Codespaces secret and run your script in Codespaces. For more information, see Using secrets in GitHub Actions and Managing your account-specific secrets for GitHub Codespaces.
+If none of these options are possible, you can store authentication credentials in a .env file. Make sure to encrypt your .env file, and never push it to any repository.
+Prepare a remediation plan
+You should create a plan to handle any security breaches in a timely manner. In the event that your token or other authentication credential is leaked, you will need to:
+Generate a new credential.
+Replace the old credential with the new one everywhere that you are storing or accessing the credential.
+Delete the old compromised credential.
+For information about rotating compromised credentials for a GitHub App, see Best practices for creating a GitHub App.
+For information about creating and deleting personal access tokens, see Managing your personal access tokens.Help and supportDid you find what you needed? Yes NoPrivacy policyHelp us make these docs great!All GitHub docs are open source. See something that's wrong or unclear? Submit a pull request.Make a contributionLearn how to contributeStill need help?Ask the GitHub communityContact supportLegal© 2026 GitHub, Inc.TermsPrivacyStatusPricingExpert servicesBlog

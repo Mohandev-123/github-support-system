@@ -1,5 +1,9 @@
 {
-  "github_docs_urls": [
+  "knowledge_source": "GitHub REST API Documentation",
+  "crawl_url": "https://docs.github.com/en/rest",
+  "max_pages": 150,
+  "description": "Crawls and indexes GitHub REST API documentation for RAG-based support",
+  "legacy_urls": [
     "https://docs.github.com/en/get-started/learning-about-github/githubs-plans",
     "https://docs.github.com/en/get-started/using-github-docs/about-versions-of-github-docs",
     "https://docs.github.com/en/billing",

@@ -1,4 +1,4 @@
-"""Download all GitHub docs from corpus seed list with progress tracking."""
+"""Download GitHub REST API docs with web crawling."""
 import json
 import time
 from utils.url_downloader import URLDocumentDownloader
@@ -6,21 +6,21 @@ from agents.github_support import GitHubSupportAgent
 
 
 def download_corpus():
-    """Download full documentation corpus."""
-    with open("docs_config.json", "r") as f:
-        config = json.load(f)
-
-    urls = config.get("github_docs_urls", [])
-    print(f"📚 GitHub Support System - Document Corpus Ingestion")
+    """Download full GitHub REST API documentation via web crawling."""
+    print(f"📚 GitHub Support System - REST API Doc Crawling")
     print("=" * 60)
-    print(f"Total URLs to download: {len(urls)}\n")
 
     start_time = time.time()
 
-    # Download
-    print("🔽 Downloading documentation...")
-    downloaded = URLDocumentDownloader.download_from_urls(urls, "data/docs")
-    print(f"✓ Downloaded: {downloaded}/{len(urls)} documents\n")
+    # Crawl GitHub REST API docs
+    print("🕷️  Crawling GitHub REST API documentation...")
+    print("    Source: https://docs.github.com/en/rest\n")
+    downloaded = URLDocumentDownloader.crawl_github_rest_api(
+        start_url="https://docs.github.com/en/rest",
+        output_dir="data/docs",
+        max_pages=150
+    )
+    print(f"✓ Downloaded: {downloaded} documents\n")
 
     # Ingest
     print("⚙️  Processing and ingesting into RAG system...")
@@ -30,7 +30,7 @@ def download_corpus():
 
     elapsed = time.time() - start_time
     print(f"⏱️  Time elapsed: {elapsed:.1f}s")
-    print("\n✅ Corpus ready! Run 'python main.py' to start querying.\n")
+    print("\n✅ Knowledge base ready! Run 'python main.py' to start querying.\n")
 
     return downloaded, ingested
 

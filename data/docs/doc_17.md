@@ -1,24 +1,121 @@
-# Source: https://docs.github.com/en/github/authenticating-to-github/authenticating-with-saml-single-sign-on/authorizing-a-personal-access-token-for-use-with-saml-single-sign-on
+# Source: https://docs.github.com/en/rest/using-the-rest-api/github-event-types
 
-Authorizing a personal access token for use with single sign-on - GitHub Enterprise Cloud DocsSkip to main contentGitHub DocsVersion: Enterprise CloudSearch or ask CopilotSearch or askCopilotSelect language: current language is EnglishSearch or ask CopilotSearch or askCopilotOpen menuOpen SidebarAuthentication/Authenticate with SSO/Personal access token with SSOHomeAuthenticationAccount securityAuthentication to GitHubCreate a strong passwordSwitching between accountsVerifying devices on sign inUpdate access credentialsManage personal access tokensReviewing your SSH keysDeploy keysToken expirationReview security logSecurity log eventsRemove sensitive dataAbout anonymized URLsGitHub's IP addressesSSH key fingerprintsSudo modeUnauthorized accessViewing and managing sessionsSecure your account with 2FAAbout 2FAAbout mandatory 2FAConfigure 2FAConfigure 2FA recoveryAccess GitHub with 2FACountries supporting SMSChange 2FA methodTroubleshooting 2FARecover an account with 2FADisable 2FAAuthenticate with a passkeyAbout passkeysManage your passkeysSign in with a passkeyAuthenticate with SSOAuthenticate as a managed userSingle sign-onSSH Key with SSOPersonal access token with SSOApps and SSOActive SSO sessionsConnect with SSHAbout SSHCheck for existing SSH keyGenerate new SSH keyAdd a new SSH keyTest your SSH connectionSSH key passphrasesSSH agent forwardingManaging deploy keysTroubleshooting SSHUse SSH over HTTPS portRecover SSH key passphraseDeleted or missing SSH keysError: Host key verification failedPermission denied (publickey)Error: Bad file numberError: Key already in usePermission denied other-userPermission denied other-repoAgent failure to signssh-add "illegal option" errorSSL certificate problemError: Unknown key typeSSH key auditVerify commit signaturesCommit signature verificationExisting GPG keysGenerating a new GPG keyAdd a GPG keyTell Git about your signing keyAssociate email with GPG keySigning commitsSigning tagsDisplaying verification for all commitsTroubleshoot verificationCheck verification statusUse verified email in GPG keyAuthentication/Authenticate with SSO/Personal access token with SSOAuthorizing a personal access token for use with single sign-onTo use a personal access token (classic) with an organization that uses single sign-on (SSO), you must first authorize the token.Copy as MarkdownYou must authorize your personal access token (classic) after creation before the token can access an organization that uses SAML single sign-on (SSO). Access to internal resources (repositories, projects, and packages) in an enterprise requires an SSO authorization for an organization within an enterprise. For more information about creating a new personal access token (classic), see Managing your personal access tokens. Fine-grained personal access tokens are authorized during token creation, before access to the organization is granted.
-Note
-If you have a linked identity for an organization, you can only use authorized personal access tokens and SSH keys with that organization, even if SSO is not enforced. You have a linked identity for an organization if you've ever authenticated via SSO for that organization, unless an organization or enterprise owner later revoked the linked identity. For more information about revoking linked identities, see Viewing and managing a member's SAML access to your organization and Viewing and managing a user's SAML access to your enterprise.
-Before you can authorize a personal access token or SSH key, you must have a linked external identity. If you're a member of an organization where SSO is enabled, you can create a linked external identity by authenticating to your organization with your identity provider (IdP) at least once. For more information, see About authentication with single sign-on.
-After you authorize a personal access token or SSH key, the token or key will stay authorized until revoked in one of the following ways.
-An organization or enterprise owner revokes the authorization.
-You are removed from the organization.
-The scopes in a personal access token are edited, or the token is regenerated.
-The personal access token expired as defined during creation.
-In the upper-right corner of any page on GitHub, click your profile picture, then click
-Settings.
-In the left sidebar, click
-Developer settings.
-In the left sidebar, click Personal access tokens.
-Next to the token you'd like to authorize, click Configure SSO. If you don't see Configure SSO, ensure that you have authenticated at least once through your identity provider to access resources on GitHub. For more information, see About authentication with single sign-on.
-In the dropdown menu, to the right of the organization you'd like to authorize the token for, click Authorize.
-Note
-When authorizing a personal access token (classic) for use within an organization that belongs to an enterprise which has both an IP allow list and single sign-on enabled at the enterprise level, your IP must also be allowed at the enterprise level. See Restricting network traffic to your enterprise with an IP allow list.
-Further reading
-Managing your personal access tokens
-About authentication with single sign-on
-Help and supportDid you find what you needed? Yes NoPrivacy policyHelp us make these docs great!All GitHub docs are open source. See something that's wrong or unclear? Submit a pull request.Make a contributionLearn how to contributeStill need help?Ask the GitHub communityContact supportLegal© 2026 GitHub, Inc.TermsPrivacyStatusPricingExpert servicesBlog
+GitHub event types - GitHub DocsSkip to main contentGitHub DocsVersion: Free, Pro, & TeamSearch or ask CopilotSearch or askCopilotSelect language: current language is EnglishSearch or ask CopilotSearch or askCopilotOpen menuOpen SidebarGitHub event typesFor the GitHub Events API, learn about each event type, the triggering action on GitHub, and each event's unique properties.Copy as MarkdownIn this articleThe Events API can return different types of events triggered by activity on GitHub. Each event response contains shared properties, but has a unique payload object determined by its event type. The Event object common properties describes the properties shared by all events, and each event type describes the payload properties that are unique to the specific event.
+Event object common properties
+The event objects returned from the Events API endpoints have the same structure.
+Event API attribute nameTypeDescriptionidintegerUnique identifier for the event.typestringThe type of event. Events uses PascalCase for the name.actorobjectThe user that triggered the event.actor.idintegerThe unique identifier for the actor.actor.loginstringThe username of the actor.actor.display_loginstringThe specific display format of the username.actor.gravatar_idstringThe unique identifier of the Gravatar profile for the actor.actor.urlstringThe REST API URL used to retrieve the user object, which includes additional user information.actor.avatar_urlstringThe URL of the actor's profile image.repoobjectThe repository object where the event occurred.repo.idintegerThe unique identifier of the repository.repo.namestringThe name of the repository, which includes the owner and repository name. For example, octocat/hello-world is the name of the hello-world repository owned by the octocat personal account.repo.urlstringThe REST API URL used to retrieve the repository object, which includes additional repository information.payloadobjectThe event payload object is unique to the event type. See the event type below for the event API payload object.publicbooleanWhether the event is visible to all users.created_atstringThe date and time when the event was triggered. It is formatted according to ISO 8601.orgobjectThe organization that was chosen by the actor to perform action that triggers the event.The property appears in the event object only if it is applicable.org.idintegerThe unique identifier for the organization.org.loginstringThe name of the organization.org.gravatar_idstringThe unique identifier of the Gravatar profile for the organization.org.urlstringThe REST API URL used to retrieve the organization object, which includes additional organization information.org.avatar_urlstringThe URL of the organization's profile image.
+Example WatchEvent event object
+This example shows the format of the WatchEvent response when using the Events API.
+HTTP/2 200
+Link: <https://api.github.com/resource?page=2>; rel="next",
+<https://api.github.com/resource?page=5>; rel="last"
+[
+{
+"id": "12345",
+"type": "WatchEvent",
+"actor": {
+"id": 1,
+"login": "octocat",
+"display_login": "octocat",
+"gravatar_id": "",
+"url": "https://api.github.com/users/octocat",
+"avatar_url": "https://github.com/images/error/octocat_happy.gif"
+},
+"repo": {
+"id": 3,
+"name": "octocat/Hello-World",
+"url": "https://api.github.com/repos/octocat/Hello-World"
+},
+"payload": {
+"action": "started"
+},
+"public": false,
+"created_at": "2011-09-06T17:26:27Z",
+"org": {
+"id": 1,
+"login": "github",
+"gravatar_id": "",
+"url": "https://api.github.com/orgs/github",
+"avatar_url": "https://github.com/images/error/octocat_happy.gif"
+},
+}
+]
+CommitCommentEvent
+A commit comment is created. The type of activity is specified in the action property of the payload object. For more information, see REST API endpoints for commit comments.
+The event object includes properties that are common for all events. Each event object includes a payload property and the value is unique to each event type. The payload object for this event is described below.
+Event payload object for CommitCommentEvent
+KeyTypeDescriptionactionstringThe action performed. Can be created.commentobjectThe commit comment resource.
+CreateEvent
+A Git branch or tag is created. For more information, see REST API endpoints for Git database.
+The event object includes properties that are common for all events. Each event object includes a payload property and the value is unique to each event type. The payload object for this event is described below.
+Event payload object for CreateEvent
+KeyTypeDescriptionrefstringThe git ref resource branch, or null if ref_type is repository.ref_typestringThe type of Git ref object created in the repository. Can be either branch, tag, or repository.full_refstringThe fully-formed ref resource, meaning that for branches the format is refs/heads/<branch_name>.master_branchstringThe name of the repository's default branch (usually main).descriptionstringThe repository's current description.pusher_typestringCan be either user or a deploy key.
+DeleteEvent
+A Git branch or tag is deleted. For more information, see the REST API endpoints for Git database REST API.
+The event object includes properties that are common for all events. Each event object includes a payload property and the value is unique to each event type. The payload object for this event is described below.
+Event payload object for DeleteEvent
+KeyTypeDescriptionrefstringThe git ref resource branch.ref_typestringThe type of Git ref object deleted in the repository. Can be either branch or tag.full_refstringThe fully-formed ref resource, meaning that for branches the format is refs/heads/<branch_name>.pusher_typestringCan be either user or a deploy key.
+DiscussionEvent
+A discussion is created in a repository. For more information, see GitHub Discussions documentation.
+The event object includes properties that are common for all events. Each event object includes a payload property and the value is unique to each event type. The payload object for this event is described below.
+Event payload object for DiscussionEvent
+KeyTypeDescriptionactionstringThe action performed. Can be created.discussionobjectThe discussion that was created.
+ForkEvent
+A user forks a repository. For more information, see REST API endpoints for repositories.
+The event object includes properties that are common for all events. Each event object includes a payload property and the value is unique to each event type. The payload object for this event is described below.
+Event payload object for ForkEvent
+KeyTypeDescriptionactionstringThe action performed. Can be forked.forkeeobjectThe created repository resource.
+GollumEvent
+A wiki page is created or updated. For more information, see About wikis.
+The event object includes properties that are common for all events. Each event object includes a payload property and the value is unique to each event type. The payload object for this event is described below.
+Event payload object for GollumEvent
+KeyTypeDescriptionpagesarrayThe pages that were updated.pages[][page_name]stringThe name of the page.pages[][title]stringThe current page title.pages[][summary]stringAn optional note about the page. Can be null.pages[][action]stringThe action that was performed on the page. Can be created or edited.pages[][sha]stringThe latest commit SHA of the page.pages[][html_url]stringPoints to the HTML wiki page.
+IssueCommentEvent
+Activity related to an issue or pull request comment. The type of activity is specified in the action property of the payload object. For more information, see the REST API endpoints for issues.
+The event object includes properties that are common for all events. Each event object includes a payload property and the value is unique to each event type. The payload object for this event is described below.
+Event payload object for IssueCommentEvent
+KeyTypeDescriptionactionstringThe action that was performed on the comment. Can be created.issueobjectThe issue the comment belongs to.commentobjectThe comment itself.
+IssuesEvent
+Activity related to an issue. The type of activity is specified in the action property of the payload object. For more information, see the REST API endpoints for issues.
+The event object includes properties that are common for all events. Each event object includes a payload property and the value is unique to each event type. The payload object for this event is described below.
+Event payload object for IssuesEvent
+KeyTypeDescriptionactionstringThe action that was performed. Can be one of opened, closed, reopened.issueobjectThe issue itself.assigneeobjectThe optional user who was assigned or unassigned from the issue.assigneesarrayThe optional array of assignee objects detailing the assignees on the issue.labelobjectThe optional label that was added or removed from the issue.labelsarrayThe optional array of label objects describing the labels on the issue.
+MemberEvent
+Activity related to repository collaborators. The type of activity is specified in the action property of the payload object. For more information, see REST API endpoints for collaborators.
+The event object includes properties that are common for all events. Each event object includes a payload property and the value is unique to each event type. The payload object for this event is described below.
+Event payload object for MemberEvent
+KeyTypeDescriptionactionstringThe action that was performed. Can be added to indicate a user accepted an invitation to a repository.memberobjectThe user that was added.
+PublicEvent
+When a private repository is made public.
+Event payload object for PublicEvent
+This event returns an empty payload object.
+PullRequestEvent
+Activity related to pull requests. The type of activity is specified in the action property of the payload object. For more information, see REST API endpoints for pull requests.
+The event object includes properties that are common for all events. Each event object includes a payload property and the value is unique to each event type. The payload object for this event is described below.
+Event payload object for PullRequestEvent
+KeyTypeDescriptionactionstringThe action that was performed. Can be one of opened, closed, merged, reopened, assigned, unassigned, labeled, or unlabeled.numberintegerThe pull request number.pull_requestobjectThe pull request itself.assigneeobjectThe optional user who was assigned or unassigned from the issue.assigneesarrayThe optional array of assignee objects detailing the assignees on the issue.labelobjectThe optional label that was added or removed from the issue if the action was labeled or unlabeled.labelsarrayThe optional array of label objects describing the labels on the pull request if the action was labeled or unlabeled.
+PullRequestReviewEvent
+Activity related to pull request reviews. The type of activity is specified in the action property of the payload object. For more information, see REST API endpoints for pull requests.
+The event object includes properties that are common for all events. Each event object includes a payload property and the value is unique to each event type. The payload object for this event is described below.
+Event payload object for PullRequestReviewEvent
+KeyTypeDescriptionactionstringThe action that was performed. Can be created, updated, or dismissed.pull_requestobjectThe pull request the review pertains to.reviewobjectThe review that was affected.
+PullRequestReviewCommentEvent
+Activity related to pull request review comments in the pull request's unified diff. The type of activity is specified in the action property of the payload object. For more information, see REST API endpoints for pull requests.
+The event object includes properties that are common for all events. Each event object includes a payload property and the value is unique to each event type. The payload object for this event is described below.
+Event payload object for PullRequestReviewCommentEvent
+KeyTypeDescriptionactionstringThe action that was performed on the comment. Can be created.pull_requestobjectThe pull request the comment belongs to.commentobjectThe comment itself.
+PushEvent
+One or more commits are pushed to a repository branch or tag.
+The event object includes properties that are common for all events. Each event object includes a payload property and the value is unique to each event type. The payload object for this event is described below.
+Event payload object for PushEvent
+KeyTypeDescriptionrepository_idintegerThe unique identifier of the repository where the push occurred.push_idintegerThe unique identifier for the push.refstringThe full git ref that was pushed. Example: refs/heads/main.headstringThe SHA of the most recent commit on ref after the push.beforestringThe SHA of the most recent commit on ref before the push.
+ReleaseEvent
+Activity related to a release. The type of activity is specified in the action property of the payload object. For more information, see the REST API endpoints for releases and release assets REST API.
+The event object includes properties that are common for all events. Each event object includes a payload property and the value is unique to each event type. The payload object for this event is described below.
+Event payload object for ReleaseEvent
+KeyTypeDescriptionactionstringThe action that was performed. Can be published.releaseobjectThe release object.
+WatchEvent
+When someone stars a repository. The type of activity is specified in the action property of the payload object. For more information, see REST API endpoints for activity.
+The event object includes properties that are common for all events. Each event object includes a payload property and the value is unique to each event type. The payload object for this event is described below.
+Event payload object for WatchEvent
+KeyTypeDescriptionactionstringThe action that was performed. Currently, can only be started.Help and supportDid you find what you needed? Yes NoPrivacy policyHelp us make these docs great!All GitHub docs are open source. See something that's wrong or unclear? Submit a pull request.Make a contributionLearn how to contributeStill need help?Ask the GitHub communityContact supportLegal© 2026 GitHub, Inc.TermsPrivacyStatusPricingExpert servicesBlog

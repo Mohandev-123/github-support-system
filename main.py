@@ -33,6 +33,22 @@ async def main():
         count = agent.ingest_docs(doc_dir)
         print(f"✓ Ingested {count} document chunks")
 
+    elif command == "crawl":
+        # Crawl GitHub REST API docs
+        max_pages = int(sys.argv[2]) if len(sys.argv) > 2 else 100
+        print(f"Crawling GitHub REST API documentation...")
+        count = URLDocumentDownloader.crawl_github_rest_api(
+            start_url="https://docs.github.com/en/rest",
+            output_dir="data/docs",
+            max_pages=max_pages
+        )
+        print(f"✓ Downloaded {count} documents")
+
+        # Auto-ingest after crawl
+        print("\nIngesting documents...")
+        ingest_count = agent.ingest_docs("data/docs")
+        print(f"✓ Ingested {ingest_count} document chunks")
+
     elif command == "download":
         # Download from URLs
         if len(sys.argv) < 3:

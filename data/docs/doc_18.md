@@ -1,52 +1,102 @@
-# Source: https://docs.github.com/en/organizations/managing-programmatic-access-to-your-organization/setting-a-personal-access-token-policy-for-your-organization
+# Source: https://docs.github.com/en/rest/authentication/authenticating-to-the-rest-api
 
-Setting a personal access token policy for your organization - GitHub DocsSkip to main contentGitHub DocsVersion: Free, Pro, & TeamSearch or ask CopilotSearch or askCopilotSelect language: current language is EnglishSearch or ask CopilotSearch or askCopilotOpen menuOpen SidebarOrganizations/Manage programmatic access/Set a token policyHomeOrganizationsCollaborate with groupsAbout organizationsOrganization dashboardBest practicesCreate new organizationAccess organization settingsCustomize organization profileOrganization news feedGitHub Actions metricsManage membershipInvite users to joinCancel or edit invitationRemove a memberReinstate a memberExport member informationCreate accounts for peopleManage organization rolesRoles in an organizationUse organization rolesPredefined roles permissionsMaintain ownership continuityAdd a billing managerRemove billing managerSecurity manager roleManaging moderatorsManage repository accessManage repository rolesRepository rolesSet base permissionsView people with accessManage individual accessManage team accessManage outside collaboratorsAdd outside collaboratorCancel collaborator invitationRemove collaboratorConvert member to collaboratorConvert collaborator to memberReinstate collaboratorOrganize members into teamsAbout organization teamsCreating an organization teamAdd members to a teamTeam maintainersTeam profile pictureCode review settingsRenaming a teamChanging team visibilityConfiguring team notificationsMove a teamAdd a child teamAdd or change parent teamRemove membersScheduled remindersDeleting a teamManage programmatic accessAbout programmatic accessGitHub App managersReview installed GitHub AppsSet a token policyManage token requestsReview token accessLimit app requests and installationsCredential types referenceManage OAuth accessOAuth app restrictionsRestrict OAuth appsUnrestrict OAuth appsApprove OAuth app accessDeny OAuth app accessManage organization settingsVerify or approve a domainRenaming an organizationTransfer ownershipRestrict repository creationSet repo management policySet visibility changes policyManage forking policyManage pull request reviewsDisable or limit actionsAbout private networkingAbout Azure private networkingConfiguring private networkingTroubleshooting Azure private networkingConfigure retention periodAllow issue deletionOrganization discussionsManage repository discussionsManage the commit signoff policyRestrict team creationManage scheduled remindersManage default branch nameManage default labelsManage display of member namesManage sponsorship updatesManage Pages site publicationManage commit commentsArchive an organizationDelete organizationConvert organization to userUpgrade to Corporate ToSDisable projectsManage projects base permissionsProject visibility permissionsCreate rulesetsManage rulesetsRepository custom propertiesManage or restrict modelsOrganization securityManage 2FAView 2FA usagePrepare to require 2FARequire 2FAManage bots & service accountsManage security settingsManage security & analysisReview audit logIP addresses in audit logAudit log eventsAccess compliance reportsMigrate to improved permissionsConvert Owners teamConvert admin teamMigrate admin teamOrganizations/Manage programmatic access/Set a token policySetting a personal access token policy for your organizationOrganization owners can control access to resources by applying policies to personal access tokensCopy as MarkdownIn this articleRestricting access by personal access tokensEnforcing a maximum lifetime policy for personal access tokensEnforcing an approval policy for fine-grained personal access tokensRestricting access by personal access tokens
-Organization owners can prevent personal access tokens from accessing resources owned by the organization with the following options:
-Restrict access via personal access tokens: Personal access tokens (classic) or fine-grained personal access tokens cannot access resources owned by the organization. SSH keys created by personal access tokens will continue to work.
-Allow access via personal access tokens: Personal access tokens (classic) or fine-grained personal access tokens can access resources owned by the organization.
-Regardless of the chosen policy, Personal access tokens will have access to public resources within the organization. By default, both Personal access tokens (classic) and fine-grained personal access tokens are enabled.
-In the upper-right corner of GitHub, click your profile picture, then click
-Organizations.
-Select an organization by clicking on it.
-Under your organization name, click
-Settings. If you cannot see the "Settings" tab, select the
-dropdown menu, then click Settings.
-In the left sidebar, under
-Personal access tokens, click Settings.
-Select either the Fine-grained tokens or Tokens (classic) tab to enforce this policy based on the token type.
-Under Fine-grained personal access tokens or Restrict personal access tokens (classic) from accessing your organizations, select your access policy.
-Click Save.
-Enforcing a maximum lifetime policy for personal access tokens
-Organization owners can set maximum lifetime allowances for both fine-grained personal access tokens and personal access tokens (classic) to control access to organization resources.
-For fine-grained personal access tokens, the default the maximum lifetime policy for organizations is set to expire within 366 days. Personal access tokens (classic) do not have an expiration requirement.
-When you set a policy, tokens with non-compliant lifetimes will be blocked from accessing your organization if the token belongs to a member of your organization. Setting this policy does not revoke or disable these tokens. Users will learn that their existing token is non-compliant when API calls for your organization are rejected.
-In the upper-right corner of GitHub, click your profile picture, then click
-Organizations.
-Select an organization by clicking on it.
-Under your organization name, click
-Settings. If you cannot see the "Settings" tab, select the
-dropdown menu, then click Settings.
-In the left sidebar, click
-Personal access tokens.
-Select either the Fine-grained tokens or Tokens (classic) tab to enforce this policy based on the token type.
-Under Set maximum lifetimes for personal access tokens, set the maximum lifetime.
-Click Save.
-Enforcing an approval policy for fine-grained personal access tokens
-Organization owners can manage approval requirements for each fine-grained personal access token that can access the organization with the following options:
-Require administrator approval: An organization owner must approve each fine-grained personal access token that can access the organization. Fine-grained personal access tokens created by organization owners will not need approval. This is the default value.
-Do not require administrator approval: Fine-grained personal access tokens created by organization members can access resources in the organization without prior approval.
-Fine-grained personal access tokens will still be able to read public resources within the organization without approval.
+Authenticating to the REST API - GitHub DocsSkip to main contentGitHub DocsVersion: Free, Pro, & TeamSearch or ask CopilotSearch or askCopilotSelect language: current language is EnglishSearch or ask CopilotSearch or askCopilotOpen menuOpen SidebarAuthenticating to the REST APIYou can authenticate to the REST API to access more endpoints and have a higher rate limit.Copy as MarkdownIn this articleAbout authentication
+Many REST API endpoints require authentication or return additional information if you are authenticated. Additionally, you can make more requests per hour when you are authenticated.
+To authenticate your request, you will need to provide an authentication token with the required scopes or permissions. There a few different ways to get a token: You can create a personal access token, generate a token with a GitHub App, or use the built-in GITHUB_TOKEN in a GitHub Actions workflow.
+After creating a token, you can authenticate your request by sending the token in the Authorization header of your request. For example, in the following request, replace YOUR-TOKEN with a reference to your token:
+curl --request GET \
+--url "https://api.github.com/octocat" \
+--header "Authorization: Bearer YOUR-TOKEN" \
+--header "X-GitHub-Api-Version: 2026-03-10"
 Note
-Only fine-grained personal access tokens, not personal access tokens (classic), are subject to approval. Unless the organization has restricted access by personal access tokens (classic), any personal access token (classic) can access organization resources without prior approval. For more information, see Restricting access by personal access tokens on this page.
-In the upper-right corner of GitHub, click your profile picture, then click
-Organizations.
-Select an organization by clicking on it.
-Under your organization name, click
-Settings. If you cannot see the "Settings" tab, select the
-dropdown menu, then click Settings.
-In the left sidebar, under
-Personal access tokens, click Settings.
-Select the Fine-grained tokens tab.
-Under Require approval of fine-grained personal access tokens, select the option that meets your needs:
-Click Save.
+In most cases, you can use Authorization: Bearer or Authorization: token to pass a token. However, if you are passing a JSON web token (JWT), you must use Authorization: Bearer.
+Failed login limit
+If you try to use a REST API endpoint without a token or with a token that has insufficient permissions, you will receive a 404 Not Found or 403 Forbidden response. Authenticating with invalid credentials will initially return a 401 Unauthorized response.
+After detecting several requests with invalid credentials within a short period, the API will temporarily reject all authentication attempts for that user (including ones with valid credentials) with a 403 Forbidden response. For more information, see Rate limits for the REST API.
+Authenticating with a personal access token
+If you want to use the GitHub REST API for personal use, you can create a personal access token. If possible, GitHub recommends that you use a fine-grained personal access token instead of a personal access token (classic). For more information about creating a personal access token, see Managing your personal access tokens.
+If you are using a fine-grained personal access token, your fine-grained personal access token requires specific permissions in order to access each REST API endpoint. The REST API reference document for each endpoint states whether the endpoint works with fine-grained personal access tokens and states what permissions are required in order for the token to use the endpoint. Some endpoints may require multiple permissions, and some endpoints may require one of multiple permissions. For an overview of which REST API endpoints a fine-grained personal access token can access with each permission, see Permissions required for fine-grained personal access tokens.
+If you are using a personal access token (classic), it requires specific scopes in order to access each REST API endpoint. For general guidance about what scopes to choose, see Scopes for OAuth apps.
+Personal access tokens act as your identity (limited by the scopes or permissions you selected) when you make requests to the REST API. As such, it is important to keep your personal access tokens secure. For more information about keeping your personal access tokens secure, see Keeping your API credentials secure.
+Personal access tokens and SAML SSO
+If you use a personal access token (classic) to access an organization that enforces SAML single sign-on (SSO) for authentication, you will need to authorize your token after creation. Fine-grained personal access tokens are authorized during token creation, before access to the organization is granted. For more information, see Authorizing a personal access token for use with single sign-on.
+If you do not authorize your personal access token (classic) for SAML SSO before you try to use it to access a single organization that enforces SAML SSO, you may receive a 404 Not Found or a 403 Forbidden error. If you receive a 403 Forbidden error, the X-GitHub-SSO header will include a URL that you can follow to authorize your token. The URL expires after one hour.
+If you do not authorize your personal access token (classic) for SAML SSO before you try to use it to access multiple organizations, the API will not return results from the organizations that require SAML SSO and the X-GitHub-SSO header will indicate the ID of the organizations that require SAML SSO authorization of your personal access token (classic). For example: X-GitHub-SSO: partial-results; organizations=21955855,20582480.
+Authenticating with a token generated by an app
+If you want to use the API for an organization or on behalf of another user, GitHub recommends that you use a GitHub App. For more information, see About authentication with a GitHub App.
+The REST API reference documentation for each endpoint states whether the endpoint works with GitHub Apps and states what permissions are required in order for the app to use the endpoint. Some endpoints may require multiple permissions, and some endpoints may require one of multiple permissions. For an overview of which REST API endpoints a GitHub App can access with each permission, see Permissions required for GitHub Apps.
+You can also create an OAuth token with an OAuth app to access the REST API. However, GitHub recommends that you use a GitHub App instead. GitHub Apps allow more control over the access and permission that the app has.
+Access tokens created by apps are automatically authorized for SAML SSO.
+Using basic authentication
+Some REST API endpoints for GitHub Apps and OAuth apps require you to use basic authentication to access the endpoint. You will use the app's client ID as the username and the app's client secret as the password.
+For example:
+curl --request POST \
+--url "https://api.github.com/applications/YOUR_CLIENT_ID/token" \
+--user "YOUR_CLIENT_ID:YOUR_CLIENT_SECRET" \
+--header "Accept: application/vnd.github+json" \
+--header "X-GitHub-Api-Version: 2026-03-10" \
+--data '{
+"access_token": "ACCESS_TOKEN_TO_CHECK"
+}'
+The client ID and client secret are associated with the app, not with the owner of the app or a user who authorized the app. They are used to perform operations on behalf of the app, such as creating access tokens.
+If you are the owner of a GitHub App or OAuth app, or if you are an app manager for a GitHub App, you can find the client ID and generate a client secret on the settings page for your app. To navigate to your app's settings page:
+In the upper-right corner of any page on GitHub, click your profile picture.
+Navigate to your account settings.
+For an app owned by a personal account, click Settings.
+For an app owned by an organization:
+Click Your organizations.
+To the right of the organization, click Settings.
+In the left sidebar, click
+Developer settings.
+In the left sidebar, click GitHub Apps or OAuth apps.
+For GitHub Apps, to the right of the GitHub App you want to access, click Edit. For OAuth apps, click the app that you want to access.
+Next to Client ID, you will see the client ID for your app.
+Next to Client secrets, click Generate a new client secret to generate a client secret for your app.
+Authenticating in a GitHub Actions workflow
+If you want to use the API in a GitHub Actions workflow, GitHub recommends that you authenticate with the built-in GITHUB_TOKEN instead of creating a token. You can grant permissions to the GITHUB_TOKEN with the permissions key. For more information, see Use GITHUB_TOKEN for authentication in workflows.
+If this is not possible, you can store your token as a secret and use the name of your secret in your GitHub Actions workflow. For more information about secrets, see Using secrets in GitHub Actions.
+Authenticating in a GitHub Actions workflow using GitHub CLI
+To make an authenticated request to the API in a GitHub Actions workflow using GitHub CLI, you can store the value of GITHUB_TOKEN as an environment variable, and use the run keyword to execute the GitHub CLI api subcommand. For more information about the run keyword, see Workflow syntax for GitHub Actions.
+In the following example workflow, replace PATH with the path of the endpoint. For more information about the path, see Getting started with the REST API.
+jobs:
+use_api:
+runs-on: ubuntu-latest
+permissions: {}
+steps:
+- env:
+GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+run: |
+gh api /PATH
+Authenticating in a GitHub Actions workflow using curl
+To make an authenticated request to the API in a GitHub Actions workflow using curl, you can store the value of GITHUB_TOKEN as an environment variable, and use the run keyword to execute a curl request to the API. For more information about the run keyword, see Workflow syntax for GitHub Actions.
+In the following example workflow, replace PATH with the path of the endpoint. For more information about the path, see Getting started with the REST API.
+YAMLjobs:
+use_api:
+runs-on: ubuntu-latest
+permissions: {}
+steps:
+- env:
+GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+run: |
+curl --request GET \
+--url "https://api.github.com/PATH" \
+--header "Authorization: Bearer $GH_TOKEN"
+jobs:
+use_api:
+runs-on: ubuntu-latest
+permissions: {}
+steps:
+- env:
+GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+run: |
+curl --request GET \
+--url "https://api.github.com/PATH" \
+--header "Authorization: Bearer $GH_TOKEN"
+Authenticating in a GitHub Actions workflow using JavaScript
+For an example of how to authenticate in a GitHub Actions workflow using JavaScript, see Scripting with the REST API and JavaScript.
+Authenticating with username and password
+Authentication with username and password is not supported. If you try to authenticate with user name and password, you will receive a 4xx error.
+Further reading
+Keeping your API credentials secure
+Getting started with the REST API
 Help and supportDid you find what you needed? Yes NoPrivacy policyHelp us make these docs great!All GitHub docs are open source. See something that's wrong or unclear? Submit a pull request.Make a contributionLearn how to contributeStill need help?Ask the GitHub communityContact supportLegal© 2026 GitHub, Inc.TermsPrivacyStatusPricingExpert servicesBlog
